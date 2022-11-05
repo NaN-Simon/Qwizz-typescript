@@ -1,15 +1,30 @@
+/* eslint-disable prefer-const */
 import './styles/_index.scss';
 // const test: HTMLElementTagNameMap
 
-// import img3 from './assets/images/3.jpg';
+interface Quest {
+  quest: string,
+  answer: string[],
+  right: number
+}
+const questions: Quest[] = [
+  {
+    quest: 'chair',
+    answer: ['стол', 'стул', 'кресло', 'диван'],
+    right: 2,
+  },
+  {
+    quest: 'couch',
+    answer: ['стол', 'стул', 'кресло', 'диван'],
+    right: 4,
+  },
+  {
+    quest: 'table',
+    answer: ['стол', 'стул', 'кресло', 'диван'],
+    right: 1,
+  },
+];
 
-const str = 'hello ';
-const str1 = 'world';
-console.log(str + str1);
-
-// const img = new Image();
-// img.src = img3;
-// img.style.maxHeight = '500px';
-
-// const imgJsWrapper = document.querySelector('.img-js');
-// imgJsWrapper?.append(img);
+let totalScore: number = 0;
+let questIndex: number = 0;
+let mistalesArrow: string[] = [];
