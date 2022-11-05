@@ -1,0 +1,47 @@
+@import "./base";
+@import "./fonts";
+@import "./reset";
+
+html {
+  color: $mainColor;
+  font-size: 14px;
+  font-family: $mainFont;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 320px;
+  max-width: 1440px;
+  margin: 0 auto;
+  text-align: center;
+  background: #0c0c0c;
+}
+
+h1 {
+  color: $testColor;
+}
+
+.wrapper {
+  display: flex;
+}
+
+.img-item {
+  max-width: 100%;
+  height: auto;
+  max-height: 500px;
+}
+
+.img-back {
+  display: block;
+  width: 50%;
+  height: 200px;
+  background-image: url("../assets/images/3.jpg");
+  background-repeat: no-repeat;
+}
+
+.example {
+  user-select: none;
+}
