@@ -1,3 +1,8 @@
 $mainColor: #eee;
 $mainFont: montserrat, arial, sans-serif;
-$testColor: #002a42;
+$bg-gradient: linear-gradient(
+  90deg,
+  rgb(203 215 81 / 100%) 0%,
+  rgb(235 105 105 / 100%) 47%,
+  rgb(129 132 187 / 100%) 100%
+);

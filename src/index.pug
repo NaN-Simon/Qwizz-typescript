@@ -31,10 +31,19 @@ head
   meta(
     name="msapplication-config",
     content="../src/assets/favicon/browserconfig.xml")
-  title Clear bundle
-h1 Welcome
-.wrapper
-  img.img-item(src='../src/assets/images/1.jpg' alt='img1')
-  img.img-item(src= require('./assets/images/2.jpg') alt='img2')
-  .img-js
-.img-back
+  title English cards
+main.main
+  .wrapper 
+    .question Загрузка вопроса
+    ul.answer
+      li.answer__item
+        label
+          input(type="radio", name="answer")
+          span Ответ...
+      li.answer__item
+        label
+          input(type="radio", name="answer")
+          span Ответ...
+    button.button Следующий вопрос
+      
+
