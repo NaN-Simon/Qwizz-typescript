@@ -25,7 +25,7 @@ body {
   display: flex;
 }
 
-.wrapper {
+.container {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -40,13 +40,26 @@ body {
   -ms-flex-align: center;
 }
 
-.answer {
+.card {
   display: flex;
   flex-direction: column;
-  gap: 5px 0;
+  gap: 10px;
 
-  &__item {
-    list-style-type: none;
+  &__answer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px 0;
+
+    &-item {
+      list-style-type: none;
+
+      &-label {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+      }
+    }
   }
 }
 

@@ -33,17 +33,27 @@ head
     content="../src/assets/favicon/browserconfig.xml")
   title English cards
 main.main
-  .wrapper 
-    .question Загрузка вопроса
-    ul.answer
-      li.answer__item
-        label
-          input(type="radio", name="answer")
-          span Ответ...
-      li.answer__item
-        label
-          input(type="radio", name="answer")
-          span Ответ...
+  .container 
+    .card
+      .question Are you ready?
+      ul.card__answer
+        form(action="") 
+          li.card__answer-item
+            label.card__answer-item-label
+              input(type="radio", name="answer")
+              span Ответ...
+          li.card__answer-item
+            label.card__answer-item-label
+              input(type="radio", name="answer")
+              span Ответ...
+          li.card__answer-item
+            label.card__answer-item-label
+              input(type="radio", name="answer")
+              span Ответ...
+          li.card__answer-item
+            label.card__answer-item-label
+              input(type="radio", name="answer")
+              span Ответ...
     button.button Следующий вопрос
       
 
