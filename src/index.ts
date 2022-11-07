@@ -35,33 +35,42 @@ const form = document.forms[0] as HTMLFormElement;
 let questIndex = 0;
 let totalScore = 0;
 let mistalesArrow: string[] = [];
-let userAnswer = 0;
 
-// toCleanCard();
-
-// form?.addEventListener('change', formClickHandler);
 btn?.addEventListener('click', btnClickHandler);
 
 displayNewQuestion();
 
-function btnClickHandler(event: Event) {
+function btnClickHandler() {
   const answer = getUserAnswer();
-  if (answer !== undefined) {
-    console.log(answer === questions[questIndex].right);
+  const rightAnswer = questions[questIndex].right;
+  const result = answer === rightAnswer;
+  if (answer === undefined) {
+    alert('Choose answer');
+  } else {
+    displayAnswer(result);
+    addScorePointOrPushMistake(answer, rightAnswer);
     questIndex++;
     displayNewQuestion();
-  } else {
-    alert('Choose answer');
   }
 }
 
-// function formClickHandler(event: Event) {
-//   event.preventDefault();
-//   console.log(userAnswer);
-//   userAnswer = 0;
-//   getUserAnswer();
-//   console.log(userAnswer);
-// }
+function addScorePointOrPushMistake(answer: string, rightAnswer: string): void {
+  if (answer === rightAnswer) {
+    totalScore++;
+  } else {
+    mistalesArrow.push(`Правильный ответ: ${answer} - Твой ответ: ${rightAnswer}`);
+  }
+}
+
+function displayAnswer(result: boolean) {
+  if (result) {
+    alert('Верно!');
+    // totalScore++;
+  } else {
+    alert('Неверно!');
+    // mistalesArrow.push(`${value} - ${rightAnswer}`);
+  }
+}
 
 function getUserAnswer() {
   const checkedInput = card.querySelector('input[type="radio"]:checked');
@@ -70,19 +79,24 @@ function getUserAnswer() {
 }
 
 function displayNewQuestion(): void {
-  let liHTML = questions[questIndex].answer.map((singleAnswer) => `
-    <li class="card__answer-item">
-      <label class="card__answer-item-label">
-      <input type="radio" name="answer">
-      <span>${singleAnswer}</span></label>
-    </li>
-    `);
+  if (questions.length !== questIndex) {
+    let liHTML = questions[questIndex].answer.map((singleAnswer) => `
+      <li class="card__answer-item">
+        <label class="card__answer-item-label">
+        <input type="radio" name="answer">
+        <span>${singleAnswer}</span></label>
+      </li>
+      `);
 
-  card.innerHTML = `
-    <div class="question">Какой перевод слова(фразы) 
-      <strong>${questions[questIndex].quest}</strong>?
-    </div>
-    <ul class="card__answer">
-      ${liHTML.join('')}
-    </ul>`;
+    card.innerHTML = `
+      <div class="question">Какой перевод слова(фразы) 
+        <strong>${questions[questIndex].quest}</strong>?
+      </div>
+      <ul class="card__answer">
+        ${liHTML.join('')}
+      </ul>`;
+  } else {
+    questIndex = 0;
+    card.innerHTML = 'Game over!';
+  }
 }
