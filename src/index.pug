@@ -32,29 +32,28 @@ head
     name="msapplication-config",
     content="../src/assets/favicon/browserconfig.xml")
   title English cards
-main.main
-  .container 
-    .sup-card
-    .card
-      .question Are you ready?
-      ul.card__answer
+main.block.js-qwizz
+  .block__qwizz
+    .block__qwizz-alert
+    .block__qwizz-window
+      .block__qwizz-heading Are you ready?
+      .block__qwizz-options
         form(action="") 
-          li.card__answer-item
-            label.card__answer-item-label
-              input(type="radio", name="answer")
-              span Ответ...
-          li.card__answer-item
-            label.card__answer-item-label
-              input(type="radio", name="answer")
-              span Ответ...
-          li.card__answer-item
-            label.card__answer-item-label
-              input(type="radio", name="answer")
-              span Ответ...
-          li.card__answer-item
-            label.card__answer-item-label
-              input(type="radio", name="answer")
-              span Ответ...
-    button.button Следующий вопрос
-      
+          label.block__qwizz-options-item
+            input(type="radio", name="answer")
+            span Ответ1...
+          label.block__qwizz-options-item
+            input(type="radio", name="answer" checked)
+            span Ответ2...
+          label.block__qwizz-options-item
+            input(type="radio", name="answer")
+            span Ответ3...
+          label.block__qwizz-options-item
+            input(type="radio", name="answer")
+            span Ответ4...
+  .button__wrapper
+    button.button.button-next Следующий вопрос
+    button.button.button-stop Остановить
+  .answer-list
+    
 
