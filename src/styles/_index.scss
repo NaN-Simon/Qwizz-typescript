@@ -13,7 +13,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 320px;
+  min-width: 300px;
   max-width: 1440px;
   height: 100vh;
   margin: 0 auto;
@@ -29,20 +29,20 @@ body {
   border-top-right-radius: 12px;
 
   &__qwizz {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     min-width: 400px;
     min-height: 180px;
+    padding: 0 20px;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
-    position: relative;
-    padding: 0 20px;
-    
 
-    &-alert{
+    &-alert {
       position: absolute;
       top: 25px;
       left: 50%;
@@ -52,25 +52,40 @@ body {
     &-window {
       display: flex;
       flex-direction: column;
-      padding: 40px 0;
       gap: 20px;
+      padding: 40px 0;
+    }
+
+    &-heading{
+      max-width: 320px;
+    }
+    @media (max-width: 425px){
+      &-heading{
+        max-width: 280px;
+      }
     }
 
     &-options {
       &-item {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          line-height: 30px;
-          border-bottom: 1px solid $doubleColor;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        line-height: 30px;
+        border-bottom: 1px solid $doubleColor;
       }
     }
   }
-}
+  
+  @media (max-width: 425px){
+    &__qwizz{
+      min-width: 280px;
+      padding: 0;
 
-.button__wrapper {
-  display: flex;
-  width: 100%;
+      &-window{
+        padding: 35px 10px;
+      }
+    }
+  }
 }
 
 .button {
@@ -86,5 +101,27 @@ body {
 
   &:hover {
     background-color: #4e4e96;
+  }
+
+  &-wrapper {
+    display: flex;
+    width: 100%;
+  }
+}
+
+.answer-list {
+  &__items {
+    margin: 9px 0;
+    padding: 6px 0;
+    padding: 12px 0;
+    list-style-type: none;
+    background: radial-gradient(#5312ff3b, white);
+    border-top: 2px dotted $doubleColor;
+  }
+
+  &__item {
+    margin: 0 10px;
+    line-height: 30px;
+    border-bottom: 1px solid $doubleColor;
   }
 }

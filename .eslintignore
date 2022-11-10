@@ -1,5 +1,6 @@
 node_modules/
 dist/
+bg-folder/
 /.vscode
 /.git
 *.js

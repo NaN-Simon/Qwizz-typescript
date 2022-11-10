@@ -22,6 +22,18 @@ class Qwizz {
 
   $answerList: HTMLElement;
 
+  questIndex = 0;
+
+  totalScore = 0;
+
+  mistalesArrow: string[] = [];
+
+  answer = '';
+
+  rightAnswer = questions[this.questIndex].right;
+
+  renderOrder: number[] = [];
+
   constructor(selector: HTMLElement) {
     this.$el = selector;
     this.$heading = this.$el.querySelector('.block__qwizz-heading') as HTMLElement;
@@ -34,24 +46,18 @@ class Qwizz {
     this.init();
   }
 
-  questIndex = 0;
-
-  totalScore = 0;
-
-  mistalesArrow: string[] = [];
-
-  answer = '';
-
-  rightAnswer = questions[this.questIndex].right;
-
   init() {
-    console.log(this.answer);
+    // this.renderOrder = this.getPseudoRandomQuestionArray(questions)
+    // this.questIndex = this.renderOrder[0]
+    // this.renderOrder.shift()
+    console.log(this.getPseudoRandomQuestionArray(questions));
 
     this.$heading.innerHTML = this.renderNewHeading(this.questIndex);
     this.$options.innerHTML = this.renderNewOptions(this.questIndex);
 
     this.btnNextClickHandler = this.btnNextClickHandler.bind(this);
     this.$btnNext.addEventListener('click', this.btnNextClickHandler);
+    this.btnStopClickHandler = this.btnStopClickHandler.bind(this);
     this.$btnStop.addEventListener('click', this.btnStopClickHandler);
   }
 
@@ -64,34 +70,60 @@ class Qwizz {
     this.addScorePointOrPushMistake();
     this.displayAnswerStatus(result);
 
-    this.rightAnswer = questions[this.questIndex].right;
     this.questIndex++;
 
+    // if (this.renderOrder.length !== 0) {
     if (questions.length !== this.questIndex) {
+      this.rightAnswer = questions[this.questIndex].right;
       this.$heading.innerHTML = this.renderNewHeading(this.questIndex);
       this.$options.innerHTML = this.renderNewOptions(this.questIndex);
     } else {
-      this.questIndex = 0;
-      this.$heading.innerHTML = `<h1>Game over!</h1><h2>Балл: ${this.totalScore}</h2>`;
-      this.$options.innerHTML = '';
-      if (this.mistalesArrow.length !== 0) {
-        this.$answerList.innerHTML = this.renderResult();
-      } else {
-        this.$options.innerHTML = 'Все верно!';
-      }
+      this.renderGameOver();
     }
-    console.log(this.questIndex, this.rightAnswer);
   }
 
-  btnStopClickHandler() {}
+  btnStopClickHandler() {
+    this.renderGameOver();
+  }
+
+  getPseudoRandomQuestionArray(array: Quest[]) {
+    const max = array.length - 1;
+    const min = 0;
+
+    let totalNumbers = max - min + 1;
+    const arrayTotalNumbers = [];
+    const arrayRandomNumbers = [];
+    let tempRandomNumber;
+
+    while (totalNumbers--) {
+      arrayTotalNumbers.push(totalNumbers + min);
+    }
+    while (arrayTotalNumbers.length) {
+      tempRandomNumber = Math.round(Math.random() * (arrayTotalNumbers.length - 1));
+      arrayRandomNumbers.push(arrayTotalNumbers[tempRandomNumber]);
+      arrayTotalNumbers.splice(tempRandomNumber, 1);
+    }
+    return arrayRandomNumbers;
+  }
+
+  renderGameOver() {
+    this.$btnNext.removeEventListener('click', this.btnNextClickHandler);
+    this.$btnNext.addEventListener('click', () => window.location.reload());
+    this.$btnNext.innerHTML = 'Start new game';
+    this.$btnStop.style.display = 'none';
+    this.questIndex = 0;
+    this.$heading.innerHTML = `<h1>Game over!</h1><h2>Балл: ${this.totalScore}</h2>`;
+    this.$options.innerHTML = '';
+    if (this.mistalesArrow.length !== 0) {
+      this.$answerList.innerHTML = this.renderResult();
+    } else {
+      this.$options.innerHTML = 'Все верно!';
+    }
+  }
 
   renderResult() {
-    const resultArray = this.mistalesArrow.map((item) => `<li class="card__answer-item">${item}</li>`).join('');
-
-    return `
-    <h5>Правильный ответ - неправильный ответ</h5>
-    <ul>${resultArray}<ul>
-    `;
+    const resultArray = this.mistalesArrow.map((item) => `<li class="answer-list__item">${item}</li>`).join('');
+    return `<ul class="answer-list__items">${resultArray}<ul>`;
   }
 
   displayAnswerStatus(result: boolean):void {
@@ -109,12 +141,13 @@ class Qwizz {
     if (this.answer === this.rightAnswer) {
       this.totalScore++;
     } else {
-      this.mistalesArrow.push(`${this.answer} - ${this.rightAnswer}`);
+      this.mistalesArrow
+        .push(`${questions[this.questIndex].quest} - ${this.rightAnswer}`);
     }
   }
 
   renderNewHeading(index: number): string {
-    return `Какой перевод слова(фразы) 
+    return `Какой перевод слова(фразы): 
               <strong class="word">${questions[index].quest}</strong>?
             `;
   }
@@ -134,107 +167,6 @@ class Qwizz {
     return checkedTextAnswer;
   }
 }
-/// / const card = document.querySelector('.card') as HTMLElement;
-/// / const buttonNext = document.querySelector('.button-next') as HTMLButtonElement;
-/// / const buttonStop = document.querySelector('.button-stop') as HTMLButtonElement;
-
-/// / let questIndex = 0;
-/// / let totalScore = 0;
-/// / let mistalesArrow: string[] = [];
-
-/// / buttonNext?.addEventListener('click', buttonNextClickHandler);
-/// / buttonStop?.addEventListener('click', buttonStopClickHandler);
-
-/// / card.innerHTML = displayNewQuestion();
-
-// function buttonStopClickHandler() {
-//   buttonNext?.removeEventListener('click', buttonNextClickHandler);
-//   if (buttonNext !== undefined) {
-//     buttonNext.innerHTML = 'Начать сначала';
-//     buttonStop.style.display = 'none';
-//   }
-//   buttonNext?.addEventListener('click', () => window.location.reload());
-//   card.innerHTML = endgame();
-// }
-
-/// / function buttonNextClickHandler() {
-/// /   const answer = getUserAnswer();
-/// /   const rightAnswer = questions[questIndex].right;
-/// /   const result = answer === rightAnswer;
-/// /   if (answer === undefined) return;
-/// /   displayAnswerStatus(result);
-/// /   addScorePointOrPushMistake(answer, rightAnswer);
-/// /   questIndex++;
-/// /   if (questions.length !== questIndex) {
-/// /     card.innerHTML = displayNewQuestion();
-/// /   } else {
-/// /     questIndex = 0;
-/// /     card.innerHTML = endgame();
-/// /   }
-/// / }
-
-/// / function addScorePointOrPushMistake(answer?: string, rightAnswer?: string): void {
-/// /   if (answer === rightAnswer) {
-/// /     totalScore++;
-/// /   } else {
-/// /     mistalesArrow.push(`${answer} - ${rightAnswer}`);
-/// /   }
-/// / }
-
-/// / function getUserAnswer() {
-/// /   const checkedInput = card.querySelector('input[type="radio"]:checked');
-/// /   const checkedTextAnswer = checkedInput?.parentElement?.querySelector('span')?.innerHTML;
-/// /   return checkedTextAnswer;
-/// / }
-
-/// / function displayNewQuestion() {
-/// /   let liHTML = questions[questIndex].answer.map((singleAnswer) => `
-/// /     <li class="card__answer-item">
-/// /       <label class="card__answer-item-label">
-/// /       <input type="radio" name="answer">
-/// /       <span>${singleAnswer}</span></label>
-/// /     </li>
-/// /     `);
-
-/// /   return `
-/// /     <div class="question">Какой перевод слова(фразы)
-/// /       <strong class="word">${questions[questIndex].quest}</strong>?
-/// /     </div>
-/// /     <ul class="card__answer">
-/// /       ${liHTML.join('')}
-/// /     </ul>`;
-/// / }
-
-/// / function displayAnswerStatus(result: boolean):void {
-/// /   if (result) {
-/// /     supCard.innerHTML = 'Верно!';
-/// /   } else {
-/// /     supCard.innerHTML = 'Неверно!';
-/// /   }
-/// /   setTimeout(() => {
-/// /     supCard.innerHTML = '';
-/// /   }, 3000);
-/// / }
-
-// function endgame() {
-//   const resultArray = mistalesArrow.map((item) => `<li class="card__answer-item">${item}</li>`).join('');
-//   let scoreList = '';
-//   if (mistalesArrow.length !== 0) {
-//     scoreList = `
-//     <h5>Правильный ответ - неправильный ответ</h5>
-//     <ul>${resultArray}<ul>
-//     `;
-//   } else {
-//     scoreList = 'Все верно!';
-//   }
-
-//   return `
-/// /   <h1>Game over!</h1>
-/// /   <h2>Балл: ${totalScore}</h2>
-//   ${scoreList}
-//   `;
-// }
 
 const qwizz = document.querySelectorAll('.js-qwizz');
-// eslint-disable-next-line no-new
 qwizz.forEach((selector) => { new Qwizz(selector as HTMLElement); });
