@@ -1,3 +1,7 @@
+/* eslint-disable prefer-destructuring */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-new */
+/* eslint-disable lines-between-class-members */
 import './styles/_index.scss';
 import questions from './questions.json';
 
@@ -7,33 +11,34 @@ interface Quest {
   right: string;
 }
 
+interface Data {
+  questIndex: number,
+  totalScore: number,
+  mistalesArrow: string[],
+  selectedAnswer: string,
+  rightAnswer: string,
+}
+
 class Qwizz {
   $el: HTMLElement;
-
   $heading: HTMLElement;
-
   $options: HTMLElement;
-
   $btnNext: HTMLElement;
-
   $btnStop: HTMLElement;
-
   $alert: HTMLElement;
-
   $answerList: HTMLElement;
 
-  questIndex = 0;
+  data: Data = {
+    questIndex: 0,
+    totalScore: 0,
+    mistalesArrow: [],
+    selectedAnswer: '',
+    rightAnswer: '',
+  };
 
-  totalScore = 0;
-
-  mistalesArrow: string[] = [];
-
-  answer = '';
-
-  rightAnswer = questions[this.questIndex].right;
-
-  renderOrder: number[] = [];
-
+  // renderOrderArray: number[] = [];
+  renderOrderArray: number[] = this.getPseudoRandomQuestionArray(questions);
+  currentOrderNumber = 0;
   constructor(selector: HTMLElement) {
     this.$el = selector;
     this.$heading = this.$el.querySelector('.block__qwizz-heading') as HTMLElement;
@@ -47,14 +52,17 @@ class Qwizz {
   }
 
   init() {
-    // this.renderOrder = this.getPseudoRandomQuestionArray(questions)
-    // this.questIndex = this.renderOrder[0]
-    // this.renderOrder.shift()
-    console.log(this.getPseudoRandomQuestionArray(questions));
+    /* присваивание псевдорандомного числа для порядка следования, если он массив не пуст */
+    if (this.renderOrderArray.length !== 0) {
+      this.currentOrderNumber = this.renderOrderArray[0];
+    }
+    console.log(this.renderOrderArray);
 
-    this.$heading.innerHTML = this.renderNewHeading(this.questIndex);
-    this.$options.innerHTML = this.renderNewOptions(this.questIndex);
+    /* Рендер первого отображения */
+    this.$heading.innerHTML = this.renderNewHeading(this.data.questIndex);
+    this.$options.innerHTML = this.renderNewOptions(this.data.questIndex);
 
+    /* Обработчики событий */
     this.btnNextClickHandler = this.btnNextClickHandler.bind(this);
     this.$btnNext.addEventListener('click', this.btnNextClickHandler);
     this.btnStopClickHandler = this.btnStopClickHandler.bind(this);
@@ -62,22 +70,42 @@ class Qwizz {
   }
 
   btnNextClickHandler() {
-    this.answer = this.getUserAnswer() || '';
-    const result = this.answer === this.rightAnswer;
+    /* ВОЗМОЖНО УДАЛИТЬ IF присваивание псевдорандомного
+    числа для порядка следования, если он массив не пуст */
+    if (this.renderOrderArray.length !== 0) {
+      this.currentOrderNumber = this.renderOrderArray[0];
+    }
 
-    if (this.answer === '') return;
+    /* получение правльного ответа */
+    this.data.rightAnswer = questions[this.data.questIndex].right;
 
-    this.addScorePointOrPushMistake();
+    /* выбранный элемент в форме */
+    this.data.selectedAnswer = this.getUserAnswer() || '';
+    /* сравнение выбранного элемента с правильным */
+    const result = this.data.selectedAnswer === this.data.rightAnswer;
+
+    /* нереагирование если ничего не выбрано */
+    if (this.data.selectedAnswer === '') return;
+
+    /* обновление рейтинга или добавление ошибки в массив */
+    this.addScorePointOrPushMistake(result);
+    /* отображение результата */
     this.displayAnswerStatus(result);
 
-    this.questIndex++;
+    /* увеличения индекса вопроса по порядку */
+    this.data.questIndex++;
 
-    // if (this.renderOrder.length !== 0) {
-    if (questions.length !== this.questIndex) {
-      this.rightAnswer = questions[this.questIndex].right;
-      this.$heading.innerHTML = this.renderNewHeading(this.questIndex);
-      this.$options.innerHTML = this.renderNewOptions(this.questIndex);
+    /* проверка: последний ли вопрос */
+    if (questions.length !== this.data.questIndex) {
+      /* отображение нового вопроса */
+      this.$heading.innerHTML = this.renderNewHeading(this.data.questIndex);
+      this.$options.innerHTML = this.renderNewOptions(this.data.questIndex);
+
+      /* присваивание нового правильного ответа */
+      this.data.rightAnswer = questions[this.data.questIndex].right;
+      this.renderOrderArray.shift();
     } else {
+      /* конец игры, если последний вопрос */
       this.renderGameOver();
     }
   }
@@ -111,10 +139,10 @@ class Qwizz {
     this.$btnNext.addEventListener('click', () => window.location.reload());
     this.$btnNext.innerHTML = 'Start new game';
     this.$btnStop.style.display = 'none';
-    this.questIndex = 0;
-    this.$heading.innerHTML = `<h1>Game over!</h1><h2>Балл: ${this.totalScore}</h2>`;
+    this.data.questIndex = 0;
+    this.$heading.innerHTML = `<h1>Game over!</h1><h2>Балл: ${this.data.totalScore}</h2>`;
     this.$options.innerHTML = '';
-    if (this.mistalesArrow.length !== 0) {
+    if (this.data.mistalesArrow.length !== 0) {
       this.$answerList.innerHTML = this.renderResult();
     } else {
       this.$options.innerHTML = 'Все верно!';
@@ -122,7 +150,7 @@ class Qwizz {
   }
 
   renderResult() {
-    const resultArray = this.mistalesArrow.map((item) => `<li class="answer-list__item">${item}</li>`).join('');
+    const resultArray = this.data.mistalesArrow.map((item) => `<li class="answer-list__item">${item}</li>`).join('');
     return `<ul class="answer-list__items">${resultArray}<ul>`;
   }
 
@@ -137,12 +165,12 @@ class Qwizz {
     }, 3000);
   }
 
-  addScorePointOrPushMistake(): void {
-    if (this.answer === this.rightAnswer) {
-      this.totalScore++;
+  addScorePointOrPushMistake(result: boolean): void {
+    if (result) {
+      this.data.totalScore++;
     } else {
-      this.mistalesArrow
-        .push(`${questions[this.questIndex].quest} - ${this.rightAnswer}`);
+      this.data.mistalesArrow
+        .push(`${questions[this.data.questIndex].quest} - ${this.data.rightAnswer}`);
     }
   }
 
