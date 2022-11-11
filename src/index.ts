@@ -65,7 +65,7 @@ class Qwizz {
 
     /* Рендер первого отображения */
     this.$heading.innerHTML = this.renderNewHeading(this.data.currentOrderNumber);
-    this.$options.innerHTML = this.renderNewOptions(this.data.currentOrderNumber);
+    this.$options.innerHTML = this.renderNewOptions(this.data.currentOrderNumber, questions);
     this.data.renderOrderArray.shift();
 
     /* Обработчики событий */
@@ -103,7 +103,7 @@ class Qwizz {
     if (this.data.renderOrderArray.length !== 0) {
       /* отображение нового вопроса */
       this.$heading.innerHTML = this.renderNewHeading(this.data.currentOrderNumber);
-      this.$options.innerHTML = this.renderNewOptions(this.data.currentOrderNumber);
+      this.$options.innerHTML = this.renderNewOptions(this.data.currentOrderNumber, questions);
 
       /* присваивание нового правильного ответа */
       this.data.rightAnswer = questions[this.data.currentOrderNumber].right;
@@ -185,8 +185,9 @@ class Qwizz {
             `;
   }
 
-  renderNewOptions(index: number): string {
-    return questions[index].answer.map((item) => `
+  renderNewOptions(index: number, questionArray: Quest[]): string {
+    const questionAnswersArray = questionArray[index].answer;
+    return questionAnswersArray.map((item) => `
       <label class="block__qwizz-options-item">
         <input type="radio" name="answer">
         <span>${item}</span>
