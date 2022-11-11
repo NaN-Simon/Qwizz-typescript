@@ -1,59 +1,60 @@
 doctype html
-head
-  meta(charset='UTF-8')
-  meta(http-equiv='X-UA-Compatible' content='IE=edge')
-  meta(name='viewport' content='width=device-width, initial-scale=1.0')
-  link(
-    rel="shortcut icon", 
-    href="./assets/favicon/favicon.ico", 
-    type="image/x-icon")
-  link(
-    rel="apple-touch-icon",
-    sizes="180x180",
-    href="../src/assets/favicon/apple-touch-icon.png")
-  link(
-    rel="icon",
-    type="image/png",
-    sizes="32x32",
-    href="../src/assets/favicon/favicon-32x32.png")
-  link(
-    rel="icon",
-    type="image/png",
-    sizes="16x16",
-    href="../src/assets/favicon/favicon-16x16.png")
-  link(
-    rel="manifest",
-    href="../src/assets/favicon/manifest.webmanifest")
-  link(
-    rel="mask-icon",
-    href="../src/assets/favicon/safari-pinned-tab.svg",
-    color="#5bbad5")
-  meta(
-    name="msapplication-config",
-    content="../src/assets/favicon/browserconfig.xml")
-  title English cards
-main.block.js-qwizz
-  .block__qwizz
-    .block__qwizz-alert
-    .block__qwizz-window
-      .block__qwizz-heading Are you ready?
-      .block__qwizz-options
-        form(action="") 
-          label.block__qwizz-options-item
-            input(type="radio", name="answer")
-            span Ответ1...
-          label.block__qwizz-options-item
-            input(type="radio", name="answer" checked)
-            span Ответ2...
-          label.block__qwizz-options-item
-            input(type="radio", name="answer")
-            span Ответ3...
-          label.block__qwizz-options-item
-            input(type="radio", name="answer")
-            span Ответ4...
-  .button-wrapper
-    button.button.button-next Следующий вопрос
-    button.button.button-stop Остановить
-  .answer-list
-    
+html(lang="ru")
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(
+      rel="shortcut icon", 
+      href="./assets/favicon/favicon.ico", 
+      type="image/x-icon")
+    link(
+      rel="apple-touch-icon",
+      sizes="180x180",
+      href="../src/assets/favicon/apple-touch-icon.png")
+    link(
+      rel="icon",
+      type="image/png",
+      sizes="32x32",
+      href="../src/assets/favicon/favicon-32x32.png")
+    link(
+      rel="icon",
+      type="image/png",
+      sizes="16x16",
+      href="../src/assets/favicon/favicon-16x16.png")
+    link(
+      rel="manifest",
+      href="../src/assets/favicon/manifest.webmanifest")
+    link(
+      rel="mask-icon",
+      href="../src/assets/favicon/safari-pinned-tab.svg",
+      color="#5bbad5")
+    meta(
+      name="msapplication-config",
+      content="../src/assets/favicon/browserconfig.xml")
+    title English cards
+  main.block.js-qwizz
+    .block__qwizz
+      .block__qwizz-alert
+      .block__qwizz-window
+        .block__qwizz-heading Are you ready?
+        .block__qwizz-options
+          form
+            label.block__qwizz-options-item
+              input(type="radio", name="answer")
+              span Ответ1...
+            label.block__qwizz-options-item
+              input(type="radio", name="answer" checked)
+              span Ответ2...
+            label.block__qwizz-options-item
+              input(type="radio", name="answer")
+              span Ответ3...
+            label.block__qwizz-options-item
+              input(type="radio", name="answer")
+              span Ответ4...
+    .button-wrapper
+      button.button.button-next Следующий вопрос
+      button.button.button-stop Остановить
+    .answer-list
+      
 

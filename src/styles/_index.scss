@@ -32,8 +32,8 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     min-width: 400px;
     min-height: 180px;
     padding: 0 20px;
@@ -56,11 +56,11 @@ body {
       padding: 40px 0;
     }
 
-    &-heading{
+    &-heading {
       max-width: 320px;
     }
-    @media (max-width: 425px){
-      &-heading{
+    @media (max-width: 425px) {
+      &-heading {
         max-width: 280px;
       }
     }
@@ -75,13 +75,13 @@ body {
       }
     }
   }
-  
-  @media (max-width: 425px){
-    &__qwizz{
+
+  @media (max-width: 425px) {
+    &__qwizz {
       min-width: 280px;
       padding: 0;
 
-      &-window{
+      &-window {
         padding: 35px 10px;
       }
     }

@@ -1,7 +1,3 @@
-/* eslint-disable prefer-destructuring */
-/* eslint-disable class-methods-use-this */
-/* eslint-disable no-new */
-/* eslint-disable lines-between-class-members */
 import './styles/_index.scss';
 import questions from './questions.json';
 
@@ -17,15 +13,24 @@ interface Data {
   mistalesArrow: string[],
   selectedAnswer: string,
   rightAnswer: string,
+  question: string,
+  currentOrderNumber: number,
+  renderOrderArray: number[],
 }
 
 class Qwizz {
   $el: HTMLElement;
+
   $heading: HTMLElement;
+
   $options: HTMLElement;
+
   $btnNext: HTMLElement;
+
   $btnStop: HTMLElement;
+
   $alert: HTMLElement;
+
   $answerList: HTMLElement;
 
   data: Data = {
@@ -34,11 +39,11 @@ class Qwizz {
     mistalesArrow: [],
     selectedAnswer: '',
     rightAnswer: '',
+    question: '',
+    currentOrderNumber: 0,
+    renderOrderArray: [],
   };
 
-  // renderOrderArray: number[] = [];
-  renderOrderArray: number[] = this.getPseudoRandomQuestionArray(questions);
-  currentOrderNumber = 0;
   constructor(selector: HTMLElement) {
     this.$el = selector;
     this.$heading = this.$el.querySelector('.block__qwizz-heading') as HTMLElement;
@@ -52,15 +57,16 @@ class Qwizz {
   }
 
   init() {
+    this.data.renderOrderArray = this.getPseudoRandomQuestionArray(questions);
     /* присваивание псевдорандомного числа для порядка следования, если он массив не пуст */
-    if (this.renderOrderArray.length !== 0) {
-      this.currentOrderNumber = this.renderOrderArray[0];
+    if (this.data.renderOrderArray.length !== 0) {
+      this.data.currentOrderNumber = this.data.renderOrderArray[0];
     }
-    console.log(this.renderOrderArray);
 
     /* Рендер первого отображения */
-    this.$heading.innerHTML = this.renderNewHeading(this.data.questIndex);
-    this.$options.innerHTML = this.renderNewOptions(this.data.questIndex);
+    this.$heading.innerHTML = this.renderNewHeading(this.data.currentOrderNumber);
+    this.$options.innerHTML = this.renderNewOptions(this.data.currentOrderNumber);
+    this.data.renderOrderArray.shift();
 
     /* Обработчики событий */
     this.btnNextClickHandler = this.btnNextClickHandler.bind(this);
@@ -70,40 +76,39 @@ class Qwizz {
   }
 
   btnNextClickHandler() {
-    /* ВОЗМОЖНО УДАЛИТЬ IF присваивание псевдорандомного
-    числа для порядка следования, если он массив не пуст */
-    if (this.renderOrderArray.length !== 0) {
-      this.currentOrderNumber = this.renderOrderArray[0];
-    }
-
-    /* получение правльного ответа */
-    this.data.rightAnswer = questions[this.data.questIndex].right;
-
     /* выбранный элемент в форме */
     this.data.selectedAnswer = this.getUserAnswer() || '';
-    /* сравнение выбранного элемента с правильным */
-    const result = this.data.selectedAnswer === this.data.rightAnswer;
-
     /* нереагирование если ничего не выбрано */
     if (this.data.selectedAnswer === '') return;
+
+    /* получение вопроса */
+    this.data.question = questions[this.data.currentOrderNumber].quest;
+    /* получение правильного ответа */
+    this.data.rightAnswer = questions[this.data.currentOrderNumber].right;
+    /* сравнение выбранного элемента с правильным */
+    const result = this.data.selectedAnswer === this.data.rightAnswer;
 
     /* обновление рейтинга или добавление ошибки в массив */
     this.addScorePointOrPushMistake(result);
     /* отображение результата */
     this.displayAnswerStatus(result);
 
+    /* присваивание псевдорандомного числа для порядка следования */
+    this.data.currentOrderNumber = this.data.renderOrderArray[0];
+
     /* увеличения индекса вопроса по порядку */
     this.data.questIndex++;
 
     /* проверка: последний ли вопрос */
-    if (questions.length !== this.data.questIndex) {
+    if (this.data.renderOrderArray.length !== 0) {
       /* отображение нового вопроса */
-      this.$heading.innerHTML = this.renderNewHeading(this.data.questIndex);
-      this.$options.innerHTML = this.renderNewOptions(this.data.questIndex);
+      this.$heading.innerHTML = this.renderNewHeading(this.data.currentOrderNumber);
+      this.$options.innerHTML = this.renderNewOptions(this.data.currentOrderNumber);
 
       /* присваивание нового правильного ответа */
-      this.data.rightAnswer = questions[this.data.questIndex].right;
-      this.renderOrderArray.shift();
+      this.data.rightAnswer = questions[this.data.currentOrderNumber].right;
+
+      this.data.renderOrderArray.shift();
     } else {
       /* конец игры, если последний вопрос */
       this.renderGameOver();
@@ -170,7 +175,7 @@ class Qwizz {
       this.data.totalScore++;
     } else {
       this.data.mistalesArrow
-        .push(`${questions[this.data.questIndex].quest} - ${this.data.rightAnswer}`);
+        .push(`${this.data.question} - ${this.data.rightAnswer}`);
     }
   }
 
@@ -180,7 +185,7 @@ class Qwizz {
             `;
   }
 
-  renderNewOptions(index: number) {
+  renderNewOptions(index: number): string {
     return questions[index].answer.map((item) => `
       <label class="block__qwizz-options-item">
         <input type="radio" name="answer">
@@ -197,4 +202,6 @@ class Qwizz {
 }
 
 const qwizz = document.querySelectorAll('.js-qwizz');
-qwizz.forEach((selector) => { new Qwizz(selector as HTMLElement); });
+qwizz.forEach((selector) => {
+  new Qwizz(selector as HTMLElement);
+});
