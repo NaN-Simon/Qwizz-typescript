@@ -1,16 +1,9 @@
-/* eslint-disable max-len */
-/* eslint-disable space-before-blocks */
-/* eslint-disable semi */
-/* eslint-disable prefer-const */
-/* eslint-disable padded-blocks */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-trailing-spaces */
 import './styles/_index.scss';
 import questions from './questions.json';
 
 interface Quest {
   quest: string;
-  right: string;
+  answer: string;
 }
 
 interface Data {
@@ -21,8 +14,8 @@ interface Data {
   rightAnswer: string,
   question: string,
   wordForGuessing: number,
-  renderOrderArray: number[],
-  tempCardsArray: number[],
+  queueArray: number[],
+  arrayOfIndexes: number[],
 }
 
 class Qwizz {
@@ -48,8 +41,8 @@ class Qwizz {
     rightAnswer: '',
     question: '',
     wordForGuessing: 0,
-    renderOrderArray: [],
-    tempCardsArray: [],
+    queueArray: [],
+    arrayOfIndexes: [],
   };
 
   constructor(selector: HTMLElement) {
@@ -65,20 +58,16 @@ class Qwizz {
   }
 
   init() {
-    this.data.renderOrderArray = this.getPseudoRandomQuestionArray(questions);
-    console.log(this.data.renderOrderArray.map((item) => questions[item].quest));
-    
-    
-    if (this.data.renderOrderArray.length !== 0) {
-      this.data.tempCardsArray = this.data.renderOrderArray.splice(0, 4); 
+    for (let i = 0; i < questions.length; i++) {
+      this.data.queueArray.push(i);
     }
-    
 
-    this.getOneQuestThreeAnswers(this.data.tempCardsArray);
-    this.$heading.innerHTML = this.renderNewHeading(this.data.tempCardsArray[0]);
-    this.$options.innerHTML = this.renderNewOptions(this.data.tempCardsArray, questions);
-    console.log(this.data.tempCardsArray.map((item) => questions[item].quest));
-    
+    if (this.data.queueArray.length !== 0) {
+      this.data.arrayOfIndexes = this.data.queueArray.splice(0, 4);
+    }
+
+    this.$heading.innerHTML = this.renderNewHeading(this.data.arrayOfIndexes[0]);
+    this.$options.innerHTML = this.renderNewOptions(this.data.arrayOfIndexes, questions);
 
     this.btnNextClickHandler = this.btnNextClickHandler.bind(this);
     this.$btnNext.addEventListener('click', this.btnNextClickHandler);
@@ -90,39 +79,27 @@ class Qwizz {
     this.data.selectedAnswer = this.getUserAnswer() || '';
     if (this.data.selectedAnswer === '') return;
 
-    this.data.question = questions[this.data.tempCardsArray[0]].quest;
-    this.data.rightAnswer = questions[this.data.tempCardsArray[0]].right;
-    const result = this.data.selectedAnswer === this.data.rightAnswer;
+    this.data.question = questions[this.data.arrayOfIndexes[0]].quest;
+    this.data.rightAnswer = questions[this.data.arrayOfIndexes[0]].answer;
+    const compare = this.data.selectedAnswer === this.data.rightAnswer;
 
-    this.addScorePointOrPushMistake(result);
-    this.displayAnswerStatus(result);
+    this.addScorePointOrPushMistake(compare);
+    this.displayAnswerStatus(compare);
 
-    this.data.wordForGuessing = this.data.renderOrderArray[0];
+    [this.data.wordForGuessing] = this.data.queueArray;
 
     this.data.questIndex++;
 
-    if (this.data.renderOrderArray.length !== 0) {
-      this.data.tempCardsArray = this.data.renderOrderArray.splice(0, 4); 
-      console.log(this.data.tempCardsArray.map((item) => questions[item].quest));
-      
+    if (this.data.queueArray.length !== 0) {
+      this.data.arrayOfIndexes = this.data.queueArray.splice(0, 4);
+
       this.$heading.innerHTML = this.renderNewHeading(this.data.wordForGuessing);
-      this.$options.innerHTML = this.renderNewOptions(this.data.tempCardsArray, questions);
+      this.$options.innerHTML = this.renderNewOptions(this.data.arrayOfIndexes, questions);
 
-      this.data.rightAnswer = questions[this.data.wordForGuessing].right;
-
+      this.data.rightAnswer = questions[this.data.wordForGuessing].answer;
     } else {
       this.renderGameOver();
     }
-  }
-
-  renderNewOptions(indexArray: number[], questionArray: Quest[]): string {
-    const answersList = this.data.tempCardsArray.map((answerNumb) => questionArray[answerNumb].right)
-    return answersList.map((item) => `
-      <label class="block__qwizz-options-item">
-        <input type="radio" name="answer">
-        <span>${item}</span>
-      </label>
-      `).join('');
   }
 
   renderNewHeading(index: number): string {
@@ -131,16 +108,17 @@ class Qwizz {
             `;
   }
 
-  getOneQuestThreeAnswers(tempArray: number[]){
-    let qr = [questions[tempArray[0]].quest, questions[tempArray[0]].right]
-    let another = [
-      [questions[tempArray[1]].quest, questions[tempArray[1]].right],
-      [questions[tempArray[2]].quest, questions[tempArray[2]].right],
-      [questions[tempArray[3]].quest, questions[tempArray[3]].right],
-    ]
-    return ''
+  renderNewOptions(indexArray: number[], questArray: Quest[]): string {
+    const answersList = indexArray.map((answerNumb) => questArray[answerNumb].answer);
+    answersList.sort(() => Math.random() - 0.5);
+    return answersList.map((item) => `
+      <label class="block__qwizz-options-item">
+        <input type="radio" name="answer">
+        <span>${item}</span>
+      </label>
+      `).join('');
   }
-  
+
   btnStopClickHandler() {
     this.renderGameOver();
   }
@@ -165,25 +143,23 @@ class Qwizz {
     return `<ul class="answer-list__items">${resultArray}<ul>`;
   }
 
-  
-  addScorePointOrPushMistake(result: boolean): void {
-    if (result) {
+  addScorePointOrPushMistake(compare: boolean): void {
+    if (compare) {
       this.data.totalScore++;
     } else {
       this.data.mistalesArrow
-      .push(`${this.data.question} - ${this.data.rightAnswer}`);
+        .push(`${this.data.question} - ${this.data.rightAnswer}`);
     }
   }
-  
+
   getUserAnswer() {
     const checkedInput = this.$options.querySelector('input[type="radio"]:checked');
     const checkedTextAnswer = checkedInput?.parentElement?.querySelector('span')?.innerHTML;
-    console.log('ОТВЕТ ЮЗЕРА: ' + checkedTextAnswer);
     return checkedTextAnswer;
   }
 
-  displayAnswerStatus(result: boolean):void {
-    if (result) {
+  displayAnswerStatus(compare: boolean):void {
+    if (compare) {
       this.$alert.innerHTML = 'Верно!';
     } else {
       this.$alert.innerHTML = 'Неверно!';
@@ -191,26 +167,6 @@ class Qwizz {
     setTimeout(() => {
       this.$alert.innerHTML = '';
     }, 3000);
-  }
-
-  getPseudoRandomQuestionArray(array: Quest[]) {
-    const max = array.length - 1;
-    const min = 0;
-
-    let totalNumbers = max - min + 1;
-    const arrayTotalNumbers = [];
-    const arrayRandomNumbers = [];
-    let tempRandomNumber;
-
-    while (totalNumbers--) {
-      arrayTotalNumbers.push(totalNumbers + min);
-    }
-    while (arrayTotalNumbers.length) {
-      tempRandomNumber = Math.round(Math.random() * (arrayTotalNumbers.length - 1));
-      arrayRandomNumbers.push(arrayTotalNumbers[tempRandomNumber]);
-      arrayTotalNumbers.splice(tempRandomNumber, 1);
-    }
-    return arrayRandomNumbers;
   }
 }
 

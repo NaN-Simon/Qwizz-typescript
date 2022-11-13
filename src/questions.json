@@ -1,34 +1,34 @@
 [
   {
     "quest": "YES",
-    "right": "Да"
+    "answer": "Да"
   },
   {
     "quest": "NO",
-    "right": "нет"
+    "answer": "нет"
   },
   {
     "quest": "hand",
-    "right": "рука"
+    "answer": "рука"
   },
   {
     "quest": "horse",
-    "right": "лошадь"
+    "answer": "лошадь"
   },
   {
     "quest": "white",
-    "right": "белый"
+    "answer": "белый"
   },
   {
     "quest": "blue",
-    "right": "синий"
+    "answer": "синий"
   },
   {
     "quest": "true",
-    "right": "правда"
+    "answer": "правда"
   },
   {
     "quest": "false",
-    "right": "ложь"
+    "answer": "ложь"
   }
 ]
