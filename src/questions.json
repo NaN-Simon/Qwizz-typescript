@@ -30,5 +30,21 @@
   {
     "quest": "false",
     "answer": "ложь"
+  },
+  {
+    "quest": "fire",
+    "answer": "огонь"
+  },
+  {
+    "quest": "water",
+    "answer": "вода"
+  },
+  {
+    "quest": "seven",
+    "answer": "7"
+  },
+  {
+    "quest": "array",
+    "answer": "коллекция"
   }
 ]

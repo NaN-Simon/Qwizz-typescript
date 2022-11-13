@@ -58,16 +58,14 @@ class Qwizz {
   }
 
   init() {
-    for (let i = 0; i < questions.length; i++) {
-      this.data.queueArray.push(i);
-    }
+    this.data.queueArray = Qwizz.getPseudoRandomQuestionArray(questions);
 
     if (this.data.queueArray.length !== 0) {
       this.data.arrayOfIndexes = this.data.queueArray.splice(0, 4);
     }
 
-    this.$heading.innerHTML = this.renderNewHeading(this.data.arrayOfIndexes[0]);
-    this.$options.innerHTML = this.renderNewOptions(this.data.arrayOfIndexes, questions);
+    this.$heading.innerHTML = Qwizz.renderNewHeading(this.data.arrayOfIndexes[0]);
+    this.$options.innerHTML = Qwizz.renderNewOptions(this.data.arrayOfIndexes, questions);
 
     this.btnNextClickHandler = this.btnNextClickHandler.bind(this);
     this.$btnNext.addEventListener('click', this.btnNextClickHandler);
@@ -93,8 +91,8 @@ class Qwizz {
     if (this.data.queueArray.length !== 0) {
       this.data.arrayOfIndexes = this.data.queueArray.splice(0, 4);
 
-      this.$heading.innerHTML = this.renderNewHeading(this.data.wordForGuessing);
-      this.$options.innerHTML = this.renderNewOptions(this.data.arrayOfIndexes, questions);
+      this.$heading.innerHTML = Qwizz.renderNewHeading(this.data.wordForGuessing);
+      this.$options.innerHTML = Qwizz.renderNewOptions(this.data.arrayOfIndexes, questions);
 
       this.data.rightAnswer = questions[this.data.wordForGuessing].answer;
     } else {
@@ -102,13 +100,13 @@ class Qwizz {
     }
   }
 
-  renderNewHeading(index: number): string {
+  static renderNewHeading(index: number): string {
     return `Какой перевод слова(фразы): 
               <strong class="word">${questions[index].quest}</strong>?
             `;
   }
 
-  renderNewOptions(indexArray: number[], questArray: Quest[]): string {
+  static renderNewOptions(indexArray: number[], questArray: Quest[]): string {
     const answersList = indexArray.map((answerNumb) => questArray[answerNumb].answer);
     answersList.sort(() => Math.random() - 0.5);
     return answersList.map((item) => `
@@ -167,6 +165,26 @@ class Qwizz {
     setTimeout(() => {
       this.$alert.innerHTML = '';
     }, 3000);
+  }
+
+  static getPseudoRandomQuestionArray(array: Quest[] | number[]) {
+    const max = array.length - 1;
+    const min = 0;
+
+    let totalNumbers = max - min + 1;
+    const arrayTotalNumbers = [];
+    const arrayRandomNumbers = [];
+    let tempRandomNumber;
+
+    while (totalNumbers--) {
+      arrayTotalNumbers.push(totalNumbers + min);
+    }
+    while (arrayTotalNumbers.length) {
+      tempRandomNumber = Math.round(Math.random() * (arrayTotalNumbers.length - 1));
+      arrayRandomNumbers.push(arrayTotalNumbers[tempRandomNumber]);
+      arrayTotalNumbers.splice(tempRandomNumber, 1);
+    }
+    return arrayRandomNumbers;
   }
 }
 
