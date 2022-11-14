@@ -20,7 +20,7 @@ to cut down on smth - уменьшать
 reduce - уменьшать
 to stay up late - ложиться спать поздно
 to be addicted to - быть зависимым от
-overate - переедать
+overeat - переедать
 be delighted - быть восторженным
 be confused - быть удивленным
 feel proud of smth - чувствовать гордость за что-то
@@ -32,7 +32,7 @@ be afraid - бояться
 be embarrassed - стыдиться
 be disappointed - быть разочарованным
 be jealous - ревновать
-split up/break up - растаться
+split up/break up - расстаться
 drift apart - отдаляться
 novelty - новизна
 colead - соруководить
@@ -44,7 +44,7 @@ going to/ gonna - собирался
 cure - вылечить
 hangover - похмелье
 comedown - наркотическое похмелье, упадок
-to be relevant to - иметь отношение к чему-нибо
+to be relevant to - иметь отношение к чему-либо
 to recall - вспоминать
 to back smb/smth - поддерживать кого-то
 election - выборы
@@ -52,7 +52,7 @@ to turn out to be - оказаться (каким-то)
 sick - больной, крутой, потрясный
 no-brainer - очевидно, элементарно
 to grab - хватать (непосредственно рукой)
-i'm assuming - я предпологаяю
+i'm assuming - я предполагаю
 didn't make it - не справился/не выжил
 appointment - назначение
 get your shit/ yourself together - собери свое дерьмо/соберись тряпка
@@ -64,12 +64,12 @@ fella - приятель
 aleck - сопляк
 deep down - в глубине души
 have an argument (argue) - поссориться
-swear - клястся
+swear - клясться
 desperate - отчаянный
-blow away - здуть
+blow away - сдуть
 silver tuna - золотая жила
 wimp - сопляк
-sickening - отвраттельный
+sickening - отвратительный
 disappear - исчезнуть
 magination - воображение
 sequence - последовательность
@@ -77,7 +77,7 @@ folks - ребята
 Indeed - в самом деле
 realized - осознал
 withdraw - изымать
-explain - обьяснять
+explain - объяснять
 proper - правильный
 fill this out - заполни это
 you got a cigarette? - у тебя есть сигарета?
@@ -91,7 +91,7 @@ suggest - предложить
 let - позволь
 refer you - направить вас
 admit - признавать
-facility - учереждение
+facility - учреждение
 exactly - именно
 expected - ожидал
 that kind of thing - такая вещь
@@ -104,7 +104,7 @@ we gotta pay - мы должны заплатить
 bragging - хвастовство
 adjusting - приспосабливаться
 anxious - тревожность
-impartial - беспристрасный
+impartial - беспристрастный
 observer - наблюдатель
 so much for - вот вам и
 noble - благородный
@@ -113,7 +113,7 @@ properly - правильно
 you wouldn't dare - ты не посмеешь
 to suffer the consequences - отвечать за последствия
 wondered - задуматься
-throught - через
+through - через
 whim - прихоть
 enact - принять
 appear - появляется
@@ -122,3 +122,29 @@ rest - отдых
 i wonder - Я думаю
 sour - кислый
 wouldn't move no matter how - не сдвинулся бы ни с того ни с сего
+In short / in brief - вкратце
+In a word - в двух словах
+As far / as to - что касается
+Not to mention - не говоря уже о
+First of all/ above all - прежде всего
+What’s more - кроме того
+By the way - кстати
+After all - в итоге/все-таки
+Just for the record - для справки/чтобы вы знали
+And so on and so forth - и так далее
+If I’m not mistaken - если я не ошибаюсь
+In other words - другими словами
+On the contrary - наоборот
+The thing is - дело в том, что
+So as to / so that - так чтобы
+Either way - так или иначе
+As a rule - обычно, как правило
+As well as - так же, как и
+All the same - без разницы
+On one hand - с одной стороны
+On the other hand - с другой стороны
+Such as - например
+As I said before - как я уже говорил
+Believe it or not, but - верите или нет, но
+If I remember rightly - если я правильно помню
+If I recall correctly - если я правильно помню
