@@ -12,7 +12,8 @@
     "watch": "set NODE_ENV=development&&webpack --watch",
     "dev": "set NODE_ENV=development&&webpack",
     "build": "set NODE_ENV=production&&webpack",
-    "webpack": "webpack"
+    "webpack": "webpack",
+    "loadquests" : "node src/node/converter"
   },
   "browserslist": [
     "last 2 versions",

@@ -1,8 +1,9 @@
 import './styles/_index.scss';
-import questions from './questions.json';
 
-interface Quest {
-  quest: string;
+import questions from './assets/questions.json';
+
+  interface Quest {
+    quest: string;
   answer: string;
 }
 
@@ -88,7 +89,7 @@ class Qwizz {
 
     this.data.questIndex++;
 
-    if (this.data.queueArray.length !== 0) {
+    if (this.data.queueArray.length > 3) {
       this.data.arrayOfIndexes = this.data.queueArray.splice(0, 4);
 
       this.$heading.innerHTML = Qwizz.renderNewHeading(this.data.wordForGuessing);
